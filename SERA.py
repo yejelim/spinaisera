@@ -112,21 +112,38 @@ if selected_language == "English":
     st.header("SERA Results Comparison")
     # 반응형 화면 크기에 따라 max_width 설정
     def get_max_width():
-        # Streamlit에서 기본적으로 화면 크기를 직접 가져올 수 없으므로 임시 설정
-        return 700  # 기본 최대 너비
+        return st.session_state.get("max_width", 700)  # 기본 최대 너비
+
+    # CSS로 이미지와 비교 컨테이너를 반응형으로 설정
+    st.markdown(
+        """
+        <style>
+        .comparison-container {
+            width: 100%;
+            max-width: 100%;
+            margin: auto;
+        }
+        .comparison-container img {
+            width: 100%;
+            height: auto;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
     # 이미지 로드 및 크기 조정
     image1 = Image.open('image1.jpg')
     image2 = Image.open('image2.png')
 
-    max_width = get_max_width()
-
     # 이미지 크기 비율 계산 및 조정
-    ratio1 = min(1, max_width / image1.width)  # 화면 크기에 맞게 비율 조정
-    ratio2 = min(1, max_width / image2.width)
+    def resize_image(image, max_width):
+        ratio = min(1, max_width / image.width)
+        return image.resize((int(image.width * ratio), int(image.height * ratio)))
 
-    image1_resized = image1.resize((int(image1.width * ratio1), int(image1.height * ratio1)))
-    image2_resized = image2.resize((int(image2.width * ratio2), int(image2.height * ratio2)))
+    max_width = 700
+    image1_resized = resize_image(image1, max_width)
+    image2_resized = resize_image(image2, max_width)
 
     # 패딩 추가
     def add_padding(image, padding, color=(0, 0, 0)):
@@ -140,19 +157,6 @@ if selected_language == "English":
     image1_padded = add_padding(image1_resized, padding, color=(0, 0, 0))
     image2_padded = add_padding(image2_resized, padding, color=(0, 0, 0))
 
-    # Streamlit CSS를 통해 반응형 레이아웃 추가
-    st.markdown(
-        """
-        <style>
-        .comparison-container {
-            max-width: 100%;
-            margin: auto;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
     # 이미지 비교 표시
     st.markdown('<div class="comparison-container">', unsafe_allow_html=True)
     image_comparison(
@@ -162,6 +166,8 @@ if selected_language == "English":
         label2="SERA Image",
         width=max_width
     )
+    st.markdown('</div>', unsafe_allow_html=True)
+
     st.markdown('</div>', unsafe_allow_html=True)
     st.header("Technical Details")
     st.markdown("""
