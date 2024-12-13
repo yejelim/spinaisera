@@ -21,6 +21,22 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+st.markdown(
+    """
+    <meta name="description" content="SERA는 척추 내시경 수술을 지원하는 AI 기반 시스템으로, 실시간 출혈 감지 및 수술 효율성을 높이는 혁신적인 기술을 제공합니다.">
+    <meta name="keywords" content="Streamlit, SERA, 척추 내시경, 출혈 감지, 의료 AI, 실시간 영상 분석">
+    <meta property="og:title" content="SERA Program | 척추 내시경 수술 지원 AI">
+    <meta property="og:description" content="SERA는 척추 내시경 수술에서 출혈 위치를 실시간 감지하고, 수술 효율성을 극대화하는 AI 기반 시스템입니다.">
+    <meta property="og:image" content="https://your-site-url.com/image-preview.png">
+    <meta property="og:url" content="https://spinai-sera.streamlit.app/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SERA Program | 척추 내시경 수술 지원 AI">
+    <meta name="twitter:description" content="SERA는 척추 내시경 수술에서 출혈 위치를 실시간 감지하고, 수술 효율성을 극대화하는 AI 기반 시스템입니다.">
+    """,
+    unsafe_allow_html=True
+)
+
+
 # 언어 선택 탭
 selected_language = st.sidebar.selectbox("Select Language", ["English", "Korean"])
 
@@ -157,8 +173,9 @@ else:
     """, unsafe_allow_html=True)
 
     st.markdown("""
-    SERA는 척추 내시경 수술을 보조하기 위해 개발된 AI 기반 시스템으로, 
-    실시간으로 출혈 위치를 감지하고 수술 효율성을 높이기 위한 혁신적인 기술입니다.
+    SERA는 척추 내시경 수술을 지원하기 위해 개발된 AI 기반 시스템입니다. 
+    SERA는 실시간으로 출혈 위치를 감지하고, 척추 내시경 수술 중 수술 효율성을 극대화하는 혁신적인 의료 AI 기술입니다.
+
     """)
 
     st.header("SERA의 주요 목표")
