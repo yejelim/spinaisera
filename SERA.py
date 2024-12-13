@@ -156,11 +156,42 @@ if selected_language == "English":
     - **Training**: 300 epochs across 5 models (n, s, m, l, x).
     """)
 
+    def resize_to_same_height(img1, img2, target_height):
+        """
+        img1, img2: Pillow 이미지 객체
+        target_height: 조정할 목표 높이
+        """
+        # 비율을 유지하면서 동일 높이로 이미지 크기 조정
+        w1, h1 = img1.size
+        w2, h2 = img2.size
+
+        # 새로운 크기 계산
+        new_w1 = int((target_height / h1) * w1)
+        new_w2 = int((target_height / h2) * w2)
+
+        img1_resized = img1.resize((new_w1, target_height))
+        img2_resized = img2.resize((new_w2, target_height))
+
+        return img1_resized, img2_resized
+
+    col1, col2 = st.columns(2)
+    anno1 = Image.open('anno1.png')
+    anno2 = Image.open('anno2.png')
+    # 동일한 높이로 조정 (예: 300px)
+    target_height = 300
+    anno1_resized, anno2_resized = resize_to_same_height(anno1, anno2, target_height)
+
+    with col1:
+        st.image(anno1_resized)
+    with col2:
+        st.image(anno2_resized)
+
     st.header("Model Results and Performance")
     df = get_performance_data()
     styled_df = style_dataframe(df)
     st.dataframe(styled_df)
-
+    st.image('mask.png', caption="From left Original images, Ground Truths, predicted masks, Visualizations")
+    
     st.header("Future Directions")
     st.markdown("""
     - **Real-time surgical support**: Minimize complications like bleeding with real-time data processing.
@@ -236,10 +267,41 @@ else:
     - **훈련**: 5가지 모델(n, s, m, l, x)로 300 epochs 동안 학습.
     """)
 
+    def resize_to_same_height(img1, img2, target_height):
+        """
+        img1, img2: Pillow 이미지 객체
+        target_height: 조정할 목표 높이
+        """
+        # 비율을 유지하면서 동일 높이로 이미지 크기 조정
+        w1, h1 = img1.size
+        w2, h2 = img2.size
+
+        # 새로운 크기 계산
+        new_w1 = int((target_height / h1) * w1)
+        new_w2 = int((target_height / h2) * w2)
+
+        img1_resized = img1.resize((new_w1, target_height))
+        img2_resized = img2.resize((new_w2, target_height))
+
+        return img1_resized, img2_resized
+
+    col1, col2 = st.columns(2)
+    anno1 = Image.open('anno1.png')
+    anno2 = Image.open('anno2.png')
+    # 동일한 높이로 조정 (예: 300px)
+    target_height = 300
+    anno1_resized, anno2_resized = resize_to_same_height(anno1, anno2, target_height)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.image(anno1_resized)
+    with col2:
+        st.image(anno2_resized)
+
     st.header("모델 결과 및 성능")
     df = get_performance_data()
     styled_df = style_dataframe(df)
     st.dataframe(styled_df)
+    st.image('mask.png', caption="왼쪽부터 원본 이미지, Ground Truth, 예측 마스크, Visualization")
 
     st.header("미래 방향")
     st.markdown("""
