@@ -110,8 +110,15 @@ if selected_language == "English":
     st.video(video_file.read())
 
     st.header("SERA Results Comparison")
+
     # 반응형 화면 크기를 인식해 max_width 설정
-    max_width = st.get_option("browser.width") if st.get_option("browser.width") else 700
+    def get_max_width(default_width=700):
+        try:
+            import streamlit.components.v1 as components
+            components.html("<script>window.parent.postMessage(window.innerWidth, '*');</script>", height=0)
+            return st.session_state.get("browser_width", default_width)
+        except Exception:
+            return default_width
 
     # 이미지 로드 및 크기 조정 함수
     def resize_image(image, max_width):
@@ -121,6 +128,9 @@ if selected_language == "English":
     # 이미지 로드
     image1 = Image.open('image1.jpg')
     image2 = Image.open('image2.png')
+
+    # 화면 크기 인식 후 max_width 설정
+    max_width = get_max_width()
 
     # 이미지 크기 조정
     image1_resized = resize_image(image1, max_width)
@@ -135,7 +145,6 @@ if selected_language == "English":
         width=max_width
     )
 
-    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
     st.header("Technical Details")
