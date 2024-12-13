@@ -109,7 +109,7 @@ if selected_language == "English":
     video_file = open('./demovideo.mp4', "rb")
     st.video(video_file.read())
 
-        st.header("SERA Results Comparison")
+    st.header("SERA Results Comparison")
     # 반응형 화면 크기에 따라 max_width 설정
     def get_max_width():
         # Streamlit에서 기본적으로 화면 크기를 직접 가져올 수 없으므로 임시 설정
