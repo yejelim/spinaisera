@@ -109,21 +109,52 @@ if selected_language == "English":
     video_file = open('./demovideo.mp4', "rb")
     st.video(video_file.read())
 
-    st.header("SERA Results Comparison")
+        st.header("SERA Results Comparison")
+    # 반응형 화면 크기에 따라 max_width 설정
+    def get_max_width():
+        # Streamlit에서 기본적으로 화면 크기를 직접 가져올 수 없으므로 임시 설정
+        return 700  # 기본 최대 너비
+
+    # 이미지 로드 및 크기 조정
     image1 = Image.open('image1.jpg')
     image2 = Image.open('image2.png')
 
-    max_width = 700
-    ratio1 = max_width / image1.width
-    ratio2 = max_width / image2.width
+    max_width = get_max_width()
+
+    # 이미지 크기 비율 계산 및 조정
+    ratio1 = min(1, max_width / image1.width)  # 화면 크기에 맞게 비율 조정
+    ratio2 = min(1, max_width / image2.width)
 
     image1_resized = image1.resize((int(image1.width * ratio1), int(image1.height * ratio1)))
     image2_resized = image2.resize((int(image2.width * ratio2), int(image2.height * ratio2)))
+
+    # 패딩 추가
+    def add_padding(image, padding, color=(0, 0, 0)):
+        new_width = image.width
+        new_height = image.height + padding * 2
+        new_image = Image.new("RGB", (new_width, new_height), color)
+        new_image.paste(image, (0, padding))
+        return new_image
 
     padding = 20
     image1_padded = add_padding(image1_resized, padding, color=(0, 0, 0))
     image2_padded = add_padding(image2_resized, padding, color=(0, 0, 0))
 
+    # Streamlit CSS를 통해 반응형 레이아웃 추가
+    st.markdown(
+        """
+        <style>
+        .comparison-container {
+            max-width: 100%;
+            margin: auto;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # 이미지 비교 표시
+    st.markdown('<div class="comparison-container">', unsafe_allow_html=True)
     image_comparison(
         img1=image1_padded,
         img2=image2_padded,
@@ -131,7 +162,7 @@ if selected_language == "English":
         label2="SERA Image",
         width=max_width
     )
-
+    st.markdown('</div>', unsafe_allow_html=True)
     st.header("Technical Details")
     st.markdown("""
     - **YOLO-V11 Model**: Optimized deep learning network for processing spinal endoscopic images in real-time.
