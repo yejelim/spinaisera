@@ -110,41 +110,27 @@ if selected_language == "English":
     st.video(video_file.read())
 
     st.header("SERA Results Comparison")
-
-    # 반응형 화면 크기를 인식해 max_width 설정
-    def get_max_width(default_width=700):
-        try:
-            import streamlit.components.v1 as components
-            components.html("<script>window.parent.postMessage(window.innerWidth, '*');</script>", height=0)
-            return st.session_state.get("browser_width", default_width)
-        except Exception:
-            return default_width
-
-    # 이미지 로드 및 크기 조정 함수
-    def resize_image(image, max_width):
-        ratio = min(1, max_width / image.width)
-        return image.resize((int(image.width * ratio), int(image.height * ratio)))
-
-    # 이미지 로드
     image1 = Image.open('image1.jpg')
     image2 = Image.open('image2.png')
 
-    # 화면 크기 인식 후 max_width 설정
-    max_width = get_max_width()
+    max_width = 700
+    ratio1 = max_width / image1.width
+    ratio2 = max_width / image2.width
 
-    # 이미지 크기 조정
-    image1_resized = resize_image(image1, max_width)
-    image2_resized = resize_image(image2, max_width)
+    image1_resized = image1.resize((int(image1.width * ratio1), int(image1.height * ratio1)))
+    image2_resized = image2.resize((int(image2.width * ratio2), int(image2.height * ratio2)))
 
-    # 이미지 비교 표시
+    padding = 20
+    image1_padded = add_padding(image1_resized, padding, color=(0, 0, 0))
+    image2_padded = add_padding(image2_resized, padding, color=(0, 0, 0))
+
     image_comparison(
-        img1=image1_resized,
-        img2=image2_resized,
+        img1=image1_padded,
+        img2=image2_padded,
         label1="Original Image",
         label2="SERA Image",
         width=max_width
     )
-
 
     st.markdown('</div>', unsafe_allow_html=True)
     st.header("Technical Details")
