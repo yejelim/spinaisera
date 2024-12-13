@@ -110,62 +110,31 @@ if selected_language == "English":
     st.video(video_file.read())
 
     st.header("SERA Results Comparison")
-    # 반응형 화면 크기에 따라 max_width 설정
-    def get_max_width():
-        return st.session_state.get("max_width", 700)  # 기본 최대 너비
+    # 반응형 화면 크기를 인식해 max_width 설정
+    max_width = st.get_option("browser.width") if st.get_option("browser.width") else 700
 
-    # CSS로 이미지와 비교 컨테이너를 반응형으로 설정
-    st.markdown(
-        """
-        <style>
-        .comparison-container {
-            width: 100%;
-            max-width: 100%;
-            margin: auto;
-        }
-        .comparison-container img {
-            width: 100%;
-            height: auto;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-    # 이미지 로드 및 크기 조정
-    image1 = Image.open('image1.jpg')
-    image2 = Image.open('image2.png')
-
-    # 이미지 크기 비율 계산 및 조정
+    # 이미지 로드 및 크기 조정 함수
     def resize_image(image, max_width):
         ratio = min(1, max_width / image.width)
         return image.resize((int(image.width * ratio), int(image.height * ratio)))
 
-    max_width = 700
+    # 이미지 로드
+    image1 = Image.open('image1.jpg')
+    image2 = Image.open('image2.png')
+
+    # 이미지 크기 조정
     image1_resized = resize_image(image1, max_width)
     image2_resized = resize_image(image2, max_width)
 
-    # 패딩 추가
-    def add_padding(image, padding, color=(0, 0, 0)):
-        new_width = image.width
-        new_height = image.height + padding * 2
-        new_image = Image.new("RGB", (new_width, new_height), color)
-        new_image.paste(image, (0, padding))
-        return new_image
-
-    padding = 20
-    image1_padded = add_padding(image1_resized, padding, color=(0, 0, 0))
-    image2_padded = add_padding(image2_resized, padding, color=(0, 0, 0))
-
     # 이미지 비교 표시
-    st.markdown('<div class="comparison-container">', unsafe_allow_html=True)
     image_comparison(
-        img1=image1_padded,
-        img2=image2_padded,
+        img1=image1_resized,
+        img2=image2_resized,
         label1="Original Image",
         label2="SERA Image",
         width=max_width
     )
+
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
