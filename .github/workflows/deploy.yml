@@ -38,7 +38,7 @@ jobs:
         script: |
             # GitHub 리포지토리 클론 (이미 클론된 경우를 대비하여 폴더 삭제)
             rm -rf /home/ubuntu/project || true
-            git clone https://github.com/<your-repo>.git /home/ubuntu/project
+            git clone https://github.com/yejelim/spinaisera.git /home/ubuntu/project
             cd /home/ubuntu/project
             sudo curl -L "https://github.com/docker/compose/releases/download/v2.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
             sudo chmod +x /usr/local/bin/docker-compose
