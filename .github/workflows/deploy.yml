@@ -35,7 +35,6 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         port: 22
         script: |
-          cd /path/to/your/project
           docker-compose down
           docker-compose pull
           docker-compose up -d
