@@ -1,0 +1,13 @@
+version: '3.11'
+
+services:
+  spinaisera:
+    container_name: spinaisera
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"
+    restart: always
+    volumes:
+      - .:/app
